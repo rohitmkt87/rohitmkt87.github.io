@@ -399,7 +399,6 @@
       <div class="card-group card-group-scroll">
         <div class="card">
           <img src="assets/images/waranty.png" class="card-img-top" alt="Palm Springs Road" />
-            
             <div class="card-body">
                 <strong class="card-title">10 YEAR WARRANTY</strong>
             </div>
@@ -418,7 +417,6 @@
             </div>
         </div>
         <div class="card">
-            
             <img src="assets/images/customer.png" class="card-img-top" alt="Los Angeles Skyscrapers" />
             <div class="card-body">
                 <strong class="card-title">ATTENTIVE AFTER SALES SERVICE</strong>
@@ -428,6 +426,26 @@
     </div>
   </section>
   <!-- end client section -->
+<!-- Modal -->
+<div class="modal fade" id="success-alert" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Successfuly submited</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Thanks for showing interest our team will contact to you soon.....
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
 
   <!-- contact section -->
   <section class="contact_section  ">
@@ -440,18 +458,18 @@
                 Contact Us
               </h2>
             </div>
-            <form action="">
+            <form action="/contact_us" id="myForm">
               <div>
-                <input type="text" placeholder="Your Name" />
+                <input type="text" placeholder="Your Name" required />
               </div>
               <div>
-                <input type="text" placeholder="Phone Number" />
+                <input type="text" placeholder="Phone Number" required />
               </div>
               <div>
-                <input type="email" placeholder="Email" />
+                <input type="email" placeholder="Email" required />
               </div>
               <div>
-                <input type="text" class="message-box" placeholder="Message" />
+                <input type="text" class="message-box" placeholder="Message" required />
               </div>
               <div class="btn_box">
                 <button>
@@ -482,3 +500,20 @@
   </section>
   <!-- end contact section -->
 {% include footer.html %}
+
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('myForm');
+    const successModal = new bootstrap.Modal(document.getElementById('success-alert')); // Initialize the modal
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        // Simulate a successful form submission (replace this with your actual form submission code)
+        setTimeout(function () {
+        form.reset();
+            // Show the success modal
+            successModal.show();
+        }, 1000); // Simulate a delay of 1 second (adjust as needed)
+    });
+});
+</script>
