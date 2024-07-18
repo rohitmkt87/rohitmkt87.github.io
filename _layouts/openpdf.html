@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    canvas {
+      display: block;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      max-width: 300%;
+      max-height: 90vh;
+    }
+    #controls {
+      text-align: center;
+      margin-top: 10px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      margin: 0 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body onload="loadPdf()">
+
+<div id="pdf-container">
+  <canvas id="pdf-canvas"></canvas>
+  <div id="controls">
+    <button id="prev" disabled>Prev</button>
+    <span id="page-num"></span> / <span id="page-count"></span>
+    <button id="next" disabled>Next</button>
+  </div>
+</div>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.4.456/pdf.min.js"></script>
+<script>
+  const pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+  let pdfDoc = null,
+      pageNum = 1,
+      pageRendering = false,
+      pageNumPending = null,
+      scale = 1.0,
+      canvas = document.getElementById('pdf-canvas'),
+      ctx = canvas.getContext('2d');
+
+  function renderPage(num) {
+    pageRendering = true;
+    pdfDoc.getPage(num).then(function(page) {
+      let viewport = page.getViewport({ scale: scale });
+
+      canvas.height = viewport.height;
+      canvas.width = viewport.width;
+
+      let renderContext = {
+        canvasContext: ctx,
+        viewport: viewport
+      };
+
+      page.render(renderContext).promise.then(function() {
+        pageRendering = false;
+        if (pageNumPending !== null) {
+          renderPage(pageNumPending);
+          pageNumPending = null;
+        }
+      });
+
+      document.getElementById('page-num').textContent = num;
+      document.getElementById('page-count').textContent = pdfDoc.numPages;
+    });
+
+    document.getElementById('prev').disabled = (num <= 1);
+    document.getElementById('next').disabled = (num >= pdfDoc.numPages);
+  }
+
+  function queueRenderPage(num) {
+    if (pageRendering) {
+      pageNumPending = num;
+    } else {
+      renderPage(num);
+    }
+  }
+
+  document.getElementById('prev').addEventListener('click', function() {
+    if (pageNum <= 1) {
+      return;
+    }
+    pageNum--;
+    queueRenderPage(pageNum);
+  });
+
+  document.getElementById('next').addEventListener('click', function() {
+    if (pageNum >= pdfDoc.numPages) {
+      return;
+    }
+    pageNum++;
+    queueRenderPage(pageNum);
+  });
+
+  async function loadPdf() {
+    const pdfUrl = 'assets/images/Aluwyn-System_compressed.pdf'
+
+    try {
+      const loadingTask = pdfjsLib.getDocument(pdfUrl);
+      const pdf = await loadingTask.promise;
+
+      pdfDoc = pdf;
+      document.getElementById('page-count').textContent = pdfDoc.numPages;
+      renderPage(pageNum);
+
+    } catch (error) {
+      console.error('Error loading PDF:', error);
+    }
+  }
+</script>
+
+</body>
+</html>
