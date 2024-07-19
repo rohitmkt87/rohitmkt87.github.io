@@ -19,7 +19,7 @@
 
     .slider {
       width: 90%;
-      max-width: 600px; /* Adjusted for better desktop view */
+      max-width: 600px;
       height: 100vh;
       overflow: hidden;
       position: relative;
@@ -38,14 +38,14 @@
       display: flex;
       flex-direction: column;
       transition: transform 0.5s ease-in-out;
-      padding: 20px 0; /* Add padding to avoid content touching the top and bottom */
+      padding: 20px 0;
     }
 
     .slider-content img {
       width: 100%;
-      max-width: 600px; /* Maintain responsiveness */
+      max-width: 600px;
       height: auto;
-      margin: 10px 0; /* Add margin between images */
+      margin: 10px 0;
     }
 
     .scroll-btn {
@@ -82,7 +82,7 @@
       color: #fff;
       font-size: 24px;
       z-index: 3000;
-      display: none; /* Initially hidden */
+      display: none;
     }
   </style>
 </head>
@@ -90,23 +90,21 @@
 
 <div class="slider">
   <div class="slider-container">
-    <!-- <button class="scroll-btn up-btn" onclick="slideUp()">Up</button> -->
     <div class="slider-content" id="sliderContent">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0001.jpg" alt="Image 1">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0002.jpg" alt="Image 2">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0003.jpg" alt="Image 3">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0005.jpg" alt="Image 5">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0006.jpg" alt="Image 6">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0007.jpg" alt="Image 7">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0008.jpg" alt="Image 8">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0009.jpg" alt="Image 9">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0010.jpg" alt="Image 10">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0011.jpg" alt="Image 11">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0012.jpg" alt="Image 12">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0013.jpg" alt="Image 13">
-      <img src="assets/images/image_pdf/Aluwyn-System_page-0014.jpg" alt="Image 14">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0001-min.jpg" alt="Image 1">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0002-min.jpg" alt="Image 2">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0003-min.jpg" alt="Image 3">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0005-min.jpg" alt="Image 5">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0006-min.jpg" alt="Image 6">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0007-min.jpg" alt="Image 7">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0008-min.jpg" alt="Image 8">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0009-min.jpg" alt="Image 9">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0010-min.jpg" alt="Image 10">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0011-min.jpg" alt="Image 11">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0012-min.jpg" alt="Image 12">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0013-min.jpg" alt="Image 13">
+      <img src="assets/images/image_pdf/Aluwyn-System_page-0014-min.jpg" alt="Image 14">
     </div>
-    <!-- <button class="scroll-btn down-btn" onclick="slideDown()">Down</button> -->
   </div>
 </div>
 
@@ -123,31 +121,13 @@
     document.getElementById('loader').style.display = 'none';
   }
 
-  // function slideUp() {
-  //   const sliderContent = document.getElementById('sliderContent');
-  //   const images = document.querySelectorAll('.slider-content img');
-  //   if (currentIndex > 0) {
-  //     currentIndex--;
-  //     sliderContent.style.transform = `translateY(-${currentIndex * (images[0].offsetHeight + 20)}px)`;
-  //   }
-  // }
-
-  // function slideDown() {
-  //   const sliderContent = document.getElementById('sliderContent');
-  //   const images = document.querySelectorAll('.slider-content img');
-  //   if (currentIndex < images.length - 1) {
-  //     currentIndex++;
-  //     sliderContent.style.transform = `translateY(-${currentIndex * (images[0].offsetHeight + 20)}px)`;
-  //   }
-  // }
-
   document.addEventListener('DOMContentLoaded', () => {
     const images = document.querySelectorAll('.slider-content img');
     images.forEach(image => {
       image.addEventListener('load', hideLoader);
       image.addEventListener('error', hideLoader);
       showLoader();
-      image.src = image.src; // Trigger image loading
+      image.src = image.src;
     });
   });
 </script>
