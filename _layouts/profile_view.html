@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PDF ashifacade profile</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      overflow: hidden;
+    }
+    #pdf-container {
+      width: 100%;
+      height: 100%;
+      overflow-y: scroll;
+      background: #f0f0f0;
+    }
+    canvas {
+      display: block;
+      margin: 20px auto;
+      border: 1px solid #ccc;
+      max-width: 100%;
+    }
+  </style>
+</head>
+<body onload="loadPdf()">
+
+<div id="pdf-container"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.4.456/pdf.min.js"></script>
+<script>
+  const pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+  let pdfDoc = null;
+
+  async function renderPage(page) {
+    const viewport = page.getViewport({ scale: 1.0 });
+    const scale = Math.min(
+      (window.innerWidth * 0.9) / viewport.width,
+      (window.innerHeight * 0.9) / viewport.height
+    );
+
+    const scaledViewport = page.getViewport({ scale: scale });
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.height = scaledViewport.height;
+    canvas.width = scaledViewport.width;
+
+    const renderContext = {
+      canvasContext: ctx,
+      viewport: scaledViewport
+    };
+
+    await page.render(renderContext).promise;
+    document.getElementById('pdf-container').appendChild(canvas);
+  }
+
+  async function renderAllPages() {
+    for (let num = 1; num <= pdfDoc.numPages; num++) {
+      const page = await pdfDoc.getPage(num);
+      await renderPage(page);
+    }
+  }
+
+  async function loadPdf() {
+    const pdfUrl = 'assets/images/Aluwyn-System_compressed.pdf';
+
+    try {
+      const loadingTask = pdfjsLib.getDocument(pdfUrl);
+      pdfDoc = await loadingTask.promise;
+      await renderAllPages();
+    } catch (error) {
+      console.error('Error loading PDF:', error);
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    document.getElementById('pdf-container').innerHTML = '';
+    renderAllPages();
+  });
+</script>
+
+</body>
+</html>
