@@ -20,7 +20,6 @@
       height: 100%;
       overflow-y: scroll;
       background: #f0f0f0;
-      padding: 10px;
     }
     canvas {
       display: block;
@@ -42,19 +41,16 @@
 
   async function renderPage(page) {
     const viewport = page.getViewport({ scale: 1.0 });
-    const containerWidth = document.getElementById('pdf-container').clientWidth;
-    const scale = containerWidth / viewport.width;
+    const scale = Math.min(
+      (window.innerWidth * 0.9) / viewport.width,
+      (window.innerHeight * 0.9) / viewport.height
+    );
 
     const scaledViewport = page.getViewport({ scale: scale });
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.height = scaledViewport.height * dpr;
-    canvas.width = scaledViewport.width * dpr;
-    canvas.style.height = `${scaledViewport.height}px`;
-    canvas.style.width = `${scaledViewport.width}px`;
-    ctx.scale(dpr, dpr);
+    canvas.height = scaledViewport.height;
+    canvas.width = scaledViewport.width;
 
     const renderContext = {
       canvasContext: ctx,
@@ -86,7 +82,7 @@
 
   window.addEventListener('resize', () => {
     document.getElementById('pdf-container').innerHTML = '';
-    loadPdf();
+    renderAllPages();
   });
 </script>
 
