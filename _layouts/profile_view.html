@@ -49,13 +49,8 @@
     const scaledViewport = page.getViewport({ scale: scale });
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.height = scaledViewport.height * dpr;
-    canvas.width = scaledViewport.width * dpr;
-    canvas.style.height = `${scaledViewport.height}px`;
-    canvas.style.width = `${scaledViewport.width}px`;
-    ctx.scale(dpr, dpr);
+    canvas.height = scaledViewport.height;
+    canvas.width = scaledViewport.width;
 
     const renderContext = {
       canvasContext: ctx,
@@ -89,20 +84,6 @@
     document.getElementById('pdf-container').innerHTML = '';
     renderAllPages();
   });
-
-  // Check if the user is on a mobile device
-  function isMobileDevice() {
-    return /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-  }
-
-  // Redirect to the desktop version if on a mobile device
-  if (isMobileDevice()) {
-    document.documentElement.style.setProperty('--viewport-scale', '0.5');
-    document.getElementById('pdf-container').style.transform = 'scale(0.5)';
-    document.getElementById('pdf-container').style.transformOrigin = '0 0';
-    document.getElementById('pdf-container').style.width = '200%';
-    document.getElementById('pdf-container').style.height = '200%';
-  }
 </script>
 
 </body>
