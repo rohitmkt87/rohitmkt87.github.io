@@ -49,8 +49,13 @@
     const scaledViewport = page.getViewport({ scale: scale });
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
-    canvas.height = scaledViewport.height;
-    canvas.width = scaledViewport.width;
+    const dpr = window.devicePixelRatio || 1;
+
+    canvas.height = scaledViewport.height * dpr;
+    canvas.width = scaledViewport.width * dpr;
+    canvas.style.height = `${scaledViewport.height}px`;
+    canvas.style.width = `${scaledViewport.width}px`;
+    ctx.scale(dpr, dpr);
 
     const renderContext = {
       canvasContext: ctx,
@@ -69,7 +74,7 @@
   }
 
   async function loadPdf() {
-    const pdfUrl = 'assets/images/Aluwyn-System.pdf';
+    const pdfUrl = 'assets/images/Aluwyn-System_compressed.pdf';
 
     try {
       const loadingTask = pdfjsLib.getDocument(pdfUrl);
